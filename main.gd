@@ -1,12 +1,12 @@
 extends Node2D
 
-@onready var tile_map = $TileMap
+@onready var tile_map = $Field
 
 func _ready():
 	# Fill 150x150 with blue (atlas index 0,0)
 	for x in range(150):
 		for y in range(150):
-			tile_map.set_cell(0, Vector2i(x, y), 0, Vector2i(0, 0))
+			tile_map.set_cell(Vector2i(x, y), 0, Vector2i(0, 0))
 	
 	# F pentomino (R-pentomino) in grey (atlas index 4,0)
 	var center_x = 75
@@ -19,7 +19,7 @@ func _ready():
 	# Offset to put it roughly in the center
 	var offset = Vector2i(center_x - 1, center_y - 1)
 	for p in pentomino:
-		tile_map.set_cell(0, p + offset, 0, Vector2i(4, 0))
+		tile_map.set_cell(p + offset, 0, Vector2i(4, 0))
 
 	# Center the camera
 	var camera = Camera2D.new()
