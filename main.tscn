@@ -2,9 +2,17 @@
 
 [ext_resource type="Script" uid="uid://v30gj5xcydqd" path="res://main.gd" id="1_script"]
 [ext_resource type="TileSet" uid="uid://dtq88l3f6qsgg" path="res://tileset.tres" id="2_tileset"]
+[ext_resource type="PackedScene" uid="uid://r3nwkuga4ehq" path="res://ui.tscn" id="3_h2yge"]
 
 [node name="Main" type="Node2D" unique_id=1226228321]
 script = ExtResource("1_script")
 
 [node name="Field" type="TileMapLayer" parent="." unique_id=1604761685]
 tile_set = ExtResource("2_tileset")
+
+[node name="Camera" type="Camera2D" parent="." unique_id=1500030349]
+
+[node name="UI" parent="." unique_id=1299442740 instance=ExtResource("3_h2yge")]
+
+[connection signal="start_stop_toggle" from="UI" to="." method="_on_ui_start_stop_toggle"]
+[connection signal="step" from="UI" to="." method="_on_ui_step"]
