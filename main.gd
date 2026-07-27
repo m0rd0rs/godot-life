@@ -71,19 +71,37 @@ func _on_ui_step() -> void:
 	one_step = true
 
 
-func _process(delta: float) -> void:
-	while running or one_step:
+func _process(_delta: float) -> void:
+	if running or one_step:
+		map_target = {}
 		for cell in map_source:
 			var x = cell.x
 			var y = cell.y
 			# check every cell around every cell we have:
-			for testx in [-1, 0, 1]:
-				for testy in [-1, 0, 1]:
+			for testx in [x - 1, x , x + 1]:
+				for testy in [y - 1, y, y + 1]:
 					var count = 0
 					# count for every cell, the amount of neighbours.
-					for countx in [-1, 0 , 1]:
-						for county in [-1, 0, 1]:
-							if map_source.has(Vector2i(x + testx + countx, y + testy + county)):
-								count += 1
-					print("x = ", x + testx, ", y = ", y + testy, " count = ", count); # debug
+					for countx in [testx - 1, testx , testx + 1]:
+						for county in [testy - 1, testy, testy + 1]:
+							if !((countx == testx) and (county == testy)):
+								if map_source.has(Vector2i(countx, county)):
+									count += 1
+					if count == 2:
+						if map_source.has(Vector2i(testx, testy)):
+							map_target[Vector2i(testx, testy)] = true
+						else:
+							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(0, 0))
+					if count < 2:
+						if map_source.has(Vector2i(testx, testy)):
+							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(0, 0))
+					if count > 3:
+						if map_source.has(Vector2i(testx, testy)):
+							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(0, 0))
+					if count == 3:
+						if !map_target.has(Vector2i(testx, testy)):
+							map_target[Vector2i(testx, testy)] = true
+							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(4, 0))
+		map_source = map_target
+
 		one_step = false
