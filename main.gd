@@ -73,35 +73,40 @@ func _on_ui_step() -> void:
 
 func _process(_delta: float) -> void:
 	if running or one_step:
-		map_target = {}
-		for cell in map_source:
-			var x = cell.x
-			var y = cell.y
-			# check every cell around every cell we have:
-			for testx in [x - 1, x , x + 1]:
-				for testy in [y - 1, y, y + 1]:
-					var count = 0
-					# count for every cell, the amount of neighbours.
-					for countx in [testx - 1, testx , testx + 1]:
-						for county in [testy - 1, testy, testy + 1]:
-							if !((countx == testx) and (county == testy)):
-								if map_source.has(Vector2i(countx, county)):
-									count += 1
-					if count == 2:
-						if map_source.has(Vector2i(testx, testy)):
-							map_target[Vector2i(testx, testy)] = true
-						else:
-							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(0, 0))
-					if count < 2:
-						if map_source.has(Vector2i(testx, testy)):
-							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(0, 0))
-					if count > 3:
-						if map_source.has(Vector2i(testx, testy)):
-							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(0, 0))
-					if count == 3:
-						if !map_target.has(Vector2i(testx, testy)):
-							map_target[Vector2i(testx, testy)] = true
-							tile_map.set_cell(Vector2i(testx, testy), 0, Vector2i(4, 0))
-		map_source = map_target
+		process_cycle()
+	one_step = false
 
-		one_step = false
+func process_cycle():
+	var neighbours = [
+		Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1),
+		Vector2i(-1, 0),                   Vector2i(1, 0),
+		Vector2i(-1, 1),  Vector2i(0, 1),  Vector2i(1, 1)
+	]
+	map_target = {}
+	for cell in map_source:
+		for adjacent in neighbours:
+			var count = 0
+			var test_cell = cell + adjacent
+			for neighbour in neighbours:
+				if  map_source.has(test_cell + neighbour):
+					count += 1
+
+			if count < 2 and map_source.has(test_cell):
+				tile_map.set_cell(test_cell, 0, Vector2i(0, 0))
+
+			if count == 2 and map_source.has(test_cell):
+				if !map_target.has(test_cell):
+					map_target[test_cell] = true
+			else:
+				tile_map.set_cell(test_cell, 0, Vector2i(0, 0))
+
+			if count == 3:
+				if !map_target.has(test_cell):
+					map_target[test_cell] = true
+				tile_map.set_cell(test_cell, 0, Vector2i(4, 0))
+
+			if count > 3:
+				if map_source.has(test_cell):
+					tile_map.set_cell(test_cell, 0, Vector2i(0, 0))
+
+	map_source = map_target
