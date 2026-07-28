@@ -11,10 +11,15 @@ var running = false
 var one_step = false
 var map_source: Dictionary[Vector2i, bool] = {}
 var map_target: Dictionary[Vector2i, bool] = {}
+var drawing = false
+var cycles = 0
 
+signal cycle
 
 func _ready():
+	_set_default()
 
+func _set_default():
 	# Fill board with blue
 	for x in range(board_size):
 		for y in range(board_size):
@@ -56,6 +61,13 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion and map_drag:
 			camera.position -= event.relative / camera.zoom
 
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		drawing = event.pressed
+		if drawing:
+			_draw_tile_at_mouse_xy()
+	elif event is InputEventMouseMotion and drawing:
+		_draw_tile_at_mouse_xy()
+
 	if event.is_action_pressed("zoom in"):
 		camera.zoom = (camera.zoom + Vector2(0.1, 0.1)).clamp(Vector2(0.2, 0.2), Vector2(3.0, 3.0))
 	
@@ -70,6 +82,12 @@ func _on_ui_start_stop_toggle() -> void:
 func _on_ui_step() -> void:
 	one_step = true
 
+func _on_ui_reset() -> void:
+	running = false
+	map_source = {}
+	_set_default()
+	cycles = 0
+	cycle.emit(cycles)
 
 func _process(_delta: float) -> void:
 	if running or one_step:
@@ -91,22 +109,29 @@ func process_cycle():
 				if  map_source.has(test_cell + neighbour):
 					count += 1
 
-			if count < 2 and map_source.has(test_cell):
-				tile_map.set_cell(test_cell, 0, Vector2i(0, 0))
-
-			if count == 2 and map_source.has(test_cell):
+			if count == 2 and map_source.has(test_cell): # Remain the same.
 				if !map_target.has(test_cell):
 					map_target[test_cell] = true
-			else:
-				tile_map.set_cell(test_cell, 0, Vector2i(0, 0))
 
-			if count == 3:
+			if count == 3: # New life is born.
 				if !map_target.has(test_cell):
 					map_target[test_cell] = true
-				tile_map.set_cell(test_cell, 0, Vector2i(4, 0))
 
-			if count > 3:
-				if map_source.has(test_cell):
-					tile_map.set_cell(test_cell, 0, Vector2i(0, 0))
+	cycles += 1
+	cycle.emit(cycles)
+
+	for cell in map_source: # cleanup
+		tile_map.set_cell(cell, 0, Vector2i(0, 0))
 
 	map_source = map_target
+
+	for cell in map_source: # redraw
+		tile_map.set_cell(cell, 0, Vector2i(4, 0))
+
+
+func _draw_tile_at_mouse_xy():
+	var mouse_pos = tile_map.get_local_mouse_position()
+	var tile_pos = tile_map.local_to_map(mouse_pos)
+	if not map_source.has(tile_pos):
+		tile_map.set_cell(tile_pos, 0, Vector2i(4,0))
+		map_source[tile_pos] = true

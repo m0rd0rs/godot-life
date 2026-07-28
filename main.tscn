@@ -14,5 +14,7 @@ tile_set = ExtResource("2_tileset")
 
 [node name="UI" parent="." unique_id=1299442740 instance=ExtResource("3_h2yge")]
 
+[connection signal="cycle" from="." to="UI" method="_on_main_cycle"]
+[connection signal="reset" from="UI" to="." method="_on_ui_reset"]
 [connection signal="start_stop_toggle" from="UI" to="." method="_on_ui_start_stop_toggle"]
 [connection signal="step" from="UI" to="." method="_on_ui_step"]

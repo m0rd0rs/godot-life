@@ -4,6 +4,7 @@
 
 [node name="UI" type="CanvasLayer" unique_id=1680470249]
 script = ExtResource("1_fyqef")
+metadata/_edit_vertical_guides_ = [128.0]
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=632943296]
 offset_right = 127.0
@@ -32,5 +33,38 @@ layout_mode = 2
 text = "Step +1"
 metadata/_edit_use_anchors_ = true
 
+[node name="MarginContainer3" type="MarginContainer" parent="." unique_id=348641022]
+offset_top = 148.0
+offset_right = 128.0
+offset_bottom = 219.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Reset" type="Button" parent="MarginContainer3" unique_id=149685947]
+layout_mode = 2
+text = "Reset"
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer4" type="MarginContainer" parent="." unique_id=249321739]
+offset_top = 837.0
+offset_right = 159.0
+offset_bottom = 900.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Cycles" type="Label" parent="MarginContainer4" unique_id=1955061544]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer4" unique_id=469823775]
+layout_mode = 2
+text = "Cycles"
+
 [connection signal="pressed" from="MarginContainer/StartStop" to="." method="start_stop"]
 [connection signal="pressed" from="MarginContainer2/Step" to="." method="step_pressed"]
+[connection signal="pressed" from="MarginContainer3/Reset" to="." method="_on_reset_pressed"]
