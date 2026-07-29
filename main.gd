@@ -1,9 +1,10 @@
 extends Node2D
 
 @onready var tile_map = $Field
+@onready var ocean_floor = $OceanFloor
 @onready var camera = $Camera
 
-var board_size: int = 175
+var board_size: int = 400
 var center_x = board_size / 2.0
 var center_y = board_size / 2.0
 var map_drag = false
@@ -24,6 +25,7 @@ func _set_default():
 	for x in range(board_size):
 		for y in range(board_size):
 			tile_map.set_cell(Vector2i(x, y), 0, Vector2i(0, 0))
+			ocean_floor.set_cell(Vector2i(x, y), 0, Vector2i(0, 0))
 
 # https://www.youtube.com/watch?v=bTPN3spiq1I
 # ToDo: Check if it's worth it to do all of them
@@ -127,6 +129,9 @@ func process_cycle():
 
 	for cell in map_source: # redraw
 		tile_map.set_cell(cell, 0, Vector2i(4, 0))
+		var atlas_index = ocean_floor.get_cell_atlas_coords(cell)
+		if atlas_index.x < 15:
+			ocean_floor.set_cell(cell, 0, Vector2i(atlas_index.x + 1, 0))
 
 
 func _draw_tile_at_mouse_xy():

@@ -1,11 +1,37 @@
 [gd_scene format=3 uid="uid://cmain01"]
 
 [ext_resource type="Script" uid="uid://v30gj5xcydqd" path="res://main.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b7rfkawdiq7u5" path="res://tiles_extended.png" id="2_1bvp3"]
 [ext_resource type="TileSet" uid="uid://dtq88l3f6qsgg" path="res://tileset.tres" id="2_tileset"]
 [ext_resource type="PackedScene" uid="uid://r3nwkuga4ehq" path="res://ui.tscn" id="3_h2yge"]
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lquwl"]
+texture = ExtResource("2_1bvp3")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_7mycd"]
+sources/0 = SubResource("TileSetAtlasSource_lquwl")
+
 [node name="Main" type="Node2D" unique_id=1226228321]
 script = ExtResource("1_script")
+
+[node name="OceanFloor" type="TileMapLayer" parent="." unique_id=874434428]
+tile_set = SubResource("TileSet_7mycd")
 
 [node name="Field" type="TileMapLayer" parent="." unique_id=1604761685]
 tile_set = ExtResource("2_tileset")
