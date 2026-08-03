@@ -30,7 +30,6 @@ func _on_main_cycle(count) -> void:
 
 func _on_save_as_pressed() -> void:
 	open_input_popup()
-	save_as.emit(file_name)
 
 func _ready() -> void:
 	popup.confirmed.connect(_on_popup_confirmed)
@@ -53,3 +52,4 @@ func _on_text_submitted(_new_text: String) -> void:
 func _save_and_close() -> void:
 	file_name = input_field.text
 	popup.hide() 
+	save_as.emit(file_name)

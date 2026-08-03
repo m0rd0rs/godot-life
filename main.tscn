@@ -42,7 +42,7 @@ tile_set = ExtResource("2_tileset")
 
 [connection signal="cycle" from="." to="UI" method="_on_main_cycle"]
 [connection signal="reset" from="UI" to="." method="_on_ui_reset"]
-[connection signal="save_as" from="UI" to="." method="_save_map_to_file"]
 [connection signal="save_as" from="UI" to="." method="save_map_to_file"]
+[connection signal="save_as" from="UI" to="." method="_save_map_to_file"]
 [connection signal="start_stop_toggle" from="UI" to="." method="_on_ui_start_stop_toggle"]
 [connection signal="step" from="UI" to="." method="_on_ui_step"]

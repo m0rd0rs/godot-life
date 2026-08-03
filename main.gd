@@ -15,7 +15,7 @@ var map_target: Dictionary[Vector2i, bool] = {}
 var drawing = false
 var cycles = 0
 
-const SAVE_PATH = "res://presets"
+const SAVE_PATH = "res://presets/"
 
 signal cycle
 
