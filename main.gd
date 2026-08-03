@@ -15,13 +15,15 @@ var map_target: Dictionary[Vector2i, bool] = {}
 var drawing = false
 var cycles = 0
 
+const SAVE_PATH = "res://presets"
+
 signal cycle
 
 func _ready():
 	_set_default()
 
 func _set_default():
-	# Fill board with blue
+	# Fill board with base tile 0
 	for x in range(board_size):
 		for y in range(board_size):
 			tile_map.set_cell(Vector2i(x, y), 0, Vector2i(0, 0))
@@ -84,12 +86,14 @@ func _on_ui_start_stop_toggle() -> void:
 func _on_ui_step() -> void:
 	one_step = true
 
+
 func _on_ui_reset() -> void:
 	running = false
 	map_source = {}
 	_set_default()
 	cycles = 0
 	cycle.emit(cycles)
+
 
 func _process(_delta: float) -> void:
 	if running or one_step:
@@ -140,3 +144,18 @@ func _draw_tile_at_mouse_xy():
 	if not map_source.has(tile_pos):
 		tile_map.set_cell(tile_pos, 0, Vector2i(4,0))
 		map_source[tile_pos] = true
+	else:
+		if map_source.has(tile_pos):
+			map_source.erase(tile_pos)
+			tile_map.set_cell(tile_pos, 0, Vector2i(0,0))
+
+
+func _save_map_to_file(filename: String):
+	print(SAVE_PATH.path_join(filename))
+	var file := FileAccess.open(SAVE_PATH.path_join(filename), FileAccess.WRITE)
+	if file == null:
+		push_error("Failed to open file for writing: %s" % FileAccess.get_open_error())
+		return
+	
+	file.store_var(map_source)
+	file.close()

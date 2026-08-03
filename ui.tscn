@@ -65,6 +65,27 @@ horizontal_alignment = 2
 layout_mode = 2
 text = "Cycles"
 
+[node name="MarginContainer5" type="MarginContainer" parent="." unique_id=485153396]
+offset_top = 218.0
+offset_right = 128.0
+offset_bottom = 289.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="SaveAs" type="Button" parent="MarginContainer5" unique_id=1808213140]
+layout_mode = 2
+text = "Save As..."
+metadata/_edit_use_anchors_ = true
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=177952453]
+
+[node name="LineEdit" type="LineEdit" parent="ConfirmationDialog" unique_id=539174144]
+offset_right = 68.5
+offset_bottom = 31.0
+
 [connection signal="pressed" from="MarginContainer/StartStop" to="." method="start_stop"]
 [connection signal="pressed" from="MarginContainer2/Step" to="." method="step_pressed"]
 [connection signal="pressed" from="MarginContainer3/Reset" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="MarginContainer5/SaveAs" to="." method="_on_save_as_pressed"]
