@@ -11,6 +11,7 @@ signal start_stop_toggle()
 signal step()
 signal reset()
 signal save_as()
+signal preset_selected()
 
 func start_stop():
 	start_stop_toggle.emit()
@@ -53,3 +54,7 @@ func _save_and_close() -> void:
 	file_name = input_field.text
 	popup.hide() 
 	save_as.emit(file_name)
+
+
+func _on_presets_item_selected(index: int) -> void:
+	preset_selected.emit(index)
