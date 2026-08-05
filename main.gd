@@ -148,7 +148,7 @@ func _draw_tile_at_mouse_xy():
 			if map_source.has(tile_pos):
 				map_source.erase(tile_pos)
 				tile_map.set_cell(tile_pos, 0, Vector2i(0,0))
-	old_tile_pos = tile_pos
+	old_tile_pos = tile_pos # Keep old tile position to avoid repeatedly changing it
 
 
 func _save_map_to_file(filename: String):
@@ -158,7 +158,10 @@ func _save_map_to_file(filename: String):
 		return
 	file.store_var(map_source)
 	file.close()
-
+	populate_presets()
+	for index in preset_list.item_count:
+		if preset_list.get_item_text(index) == filename:
+			preset_list.select(index)
 
 func get_preset_filenames() -> Array[String]:
 	var file_names: Array[String] = []
