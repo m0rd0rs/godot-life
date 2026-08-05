@@ -162,6 +162,7 @@ func _save_map_to_file(filename: String):
 	for index in preset_list.item_count:
 		if preset_list.get_item_text(index) == filename:
 			preset_list.select(index)
+	_set_default()
 
 func get_preset_filenames() -> Array[String]:
 	var file_names: Array[String] = []
